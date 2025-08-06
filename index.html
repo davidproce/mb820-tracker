@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 MB-820 Preparation Tracker - Agosto 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .progress-stats {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .week-section {
+            padding: 25px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .week-section:last-child {
+            border-bottom: none;
+        }
+        
+        .week-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .week-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .week1 { background: #FF6B6B; }
+        .week2 { background: #4ECDC4; }
+        .week3 { background: #45B7D1; }
+        .week4 { background: #96CEB4; }
+        
+        .week-title {
+            flex: 1;
+        }
+        
+        .week-title h3 {
+            color: #333;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+        
+        .week-subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .week-progress {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-left: auto;
+            width: 100px;
+        }
+        
+        .week-progress-bar {
+            height: 100%;
+            background: #4CAF50;
+            transition: width 0.3s ease;
+        }
+        
+        .day-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .day-card {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .day-card:hover {
+            border-color: #4CAF50;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .day-card.completed {
+            border-color: #4CAF50;
+            background: #f8fff8;
+        }
+        
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+        
+        .day-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .day-checkbox.checked {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+        }
+        
+        .day-info h4 {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+        
+        .day-date {
+            color: #666;
+            font-size: 0.85rem;
+        }
+        
+        .day-duration {
+            margin-left: auto;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .day-content {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        
+        .rest-day {
+            background: #fff3cd !important;
+            border-color: #ffeaa7 !important;
+        }
+        
+        .rest-day .day-duration {
+            background: #ffeaa7;
+            color: #b7950b;
+        }
+        
+        .exam-day {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52) !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .exam-day .day-info h4,
+        .exam-day .day-content {
+            color: white !important;
+        }
+        
+        .exam-day .day-duration {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .day-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Certificación MB-820</h1>
+            <p>Plan de Preparación - Agosto 2025</p>
+        </div>
+        
+        <div class="progress-stats">
+            <div class="stat">
+                <div class="stat-number" id="completed-days">0</div>
+                <div class="stat-label">Días Completados</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="total-hours">0</div>
+                <div class="stat-label">Horas Estudiadas</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="progress-percent">0%</div>
+                <div class="stat-label">Progreso Total</div>
+            </div>
+        </div>
+        
+        <!-- SEMANA 1 -->
+        <div class="week-section">
+            <div class="week-header">
+                <div class="week-icon week1">1</div>
+                <div class="week-title">
+                    <h3>Semana 1: Fundamentos</h3>
+                    <div class="week-subtitle">Begin Programming in Business Central (3.5h)</div>
+                </div>
+                <div class="week-progress">
+                    <div class="week-progress-bar" id="week1-progress" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div class="day-grid">
+                <div class="day-card" data-week="1" data-day="1" data-hours="1.3">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Martes 6 Ago</h4>
+                            <div class="day-date">Día 1</div>
+                        </div>
+                        <div class="day-duration">1h 20m</div>
+                    </div>
+                    <div class="day-content">Setup + Tables + Triggers</div>
+                </div>
+                
+                <div class="day-card" data-week="1" data-day="2" data-hours="1.25">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Miércoles 7 Ago</h4>
+                            <div class="day-date">Día 2</div>
+                        </div>
+                        <div class="day-duration">1h 15m</div>
+                    </div>
+                    <div class="day-content">Pages + FlowFields</div>
+                </div>
+                
+                <div class="day-card" data-week="1" data-day="3" data-hours="1">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Jueves 8 Ago</h4>
+                            <div class="day-date">Día 3</div>
+                        </div>
+                        <div class="day-duration">1h</div>
+                    </div>
+                    <div class="day-content">Reports (RDLC/Word)</div>
+                </div>
+                
+                <div class="day-card rest-day" data-week="1" data-day="4" data-hours="0">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Viernes 9 Ago</h4>
+                            <div class="day-date">Descanso</div>
+                        </div>
+                        <div class="day-duration">📴 Rest</div>
+                    </div>
+                    <div class="day-content">Día de descanso y reflexión</div>
+                </div>
+                
+                <div class="day-card" data-week="1" data-day="5" data-hours="1.5">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Sábado 10 Ago</h4>
+                            <div class="day-date">Día 4</div>
+                        </div>
+                        <div class="day-duration">1h 30m</div>
+                    </div>
+                    <div class="day-content">Queries + APIs básicas</div>
+                </div>
+                
+                <div class="day-card" data-week="1" data-day="6" data-hours="1.25">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Domingo 11 Ago</h4>
+                            <div class="day-date">Día 5</div>
+                        </div>
+                        <div class="day-duration">1h 15m</div>
+                    </div>
+                    <div class="day-content">Background Tasks + Repaso</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SEMANA 2 -->
+        <div class="week-section">
+            <div class="week-header">
+                <div class="week-icon week2">2</div>
+                <div class="week-title">
+                    <h3>Semana 2: Nivel Intermedio</h3>
+                    <div class="week-subtitle">Business Central: Intermediate Programming (5h)</div>
+                </div>
+                <div class="week-progress">
+                    <div class="week-progress-bar" id="week2-progress" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div class="day-grid">
+                <div class="day-card" data-week="2" data-day="1" data-hours="1.17">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Lunes 12 Ago</h4>
+                            <div class="day-date">Día 6</div>
+                        </div>
+                        <div class="day-duration">1h 10m</div>
+                    </div>
+                    <div class="day-content">Setup + Debugging + Job Queue</div>
+                </div>
+                
+                <div class="day-card" data-week="2" data-day="2" data-hours="1.33">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Martes 13 Ago</h4>
+                            <div class="day-date">Día 7</div>
+                        </div>
+                        <div class="day-duration">1h 20m</div>
+                    </div>
+                    <div class="day-content">🔥 Events (crítico para MB-820)</div>
+                </div>
+                
+                <div class="day-card" data-week="2" data-day="3" data-hours="1">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Miércoles 14 Ago</h4>
+                            <div class="day-date">Día 8</div>
+                        </div>
+                        <div class="day-duration">1h</div>
+                    </div>
+                    <div class="day-content">Single Instance + Install/Upgrade</div>
+                </div>
+                
+                <div class="day-card rest-day" data-week="2" data-day="4" data-hours="0">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Jueves 15 Ago</h4>
+                            <div class="day-date">Descanso</div>
+                        </div>
+                        <div class="day-duration">📴 Rest</div>
+                    </div>
+                    <div class="day-content">Día de descanso y reflexión</div>
+                </div>
+                
+                <div class="day-card" data-week="2" data-day="5" data-hours="1.5">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Viernes 16 Ago</h4>
+                            <div class="day-date">Día 9</div>
+                        </div>
+                        <div class="day-duration">1h 30m</div>
+                    </div>
+                    <div class="day-content">GitHub Copilot + Testing</div>
+                </div>
+                
+                <div class="day-card" data-week="2" data-day="6" data-hours="1.5">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Sábado 17 Ago</h4>
+                            <div class="day-date">Día 10</div>
+                        </div>
+                        <div class="day-duration">1h 30m</div>
+                    </div>
+                    <div class="day-content">Admin Center + Telemetría</div>
+                </div>
+                
+                <div class="day-card" data-week="2" data-day="7" data-hours="1">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Domingo 18 Ago</h4>
+                            <div class="day-date">Día 11</div>
+                        </div>
+                        <div class="day-duration">1h</div>
+                    </div>
+                    <div class="day-content">Data Administration + Repaso</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SEMANA 3-4 -->
+        <div class="week-section">
+            <div class="week-header">
+                <div class="week-icon week3">3-4</div>
+                <div class="week-title">
+                    <h3>Semana 3-4: Master Level</h3>
+                    <div class="week-subtitle">AL Programming Zero to Hero (10h)</div>
+                </div>
+                <div class="week-progress">
+                    <div class="week-progress-bar" id="week3-progress" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div class="day-grid">
+                <div class="day-card" data-week="3" data-day="1" data-hours="1.5">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Lunes 19 Ago</h4>
+                            <div class="day-date">Día 12</div>
+                        </div>
+                        <div class="day-duration">1h 30m</div>
+                    </div>
+                    <div class="day-content">Intro + Setup + Tables profundo</div>
+                </div>
+                
+                <div class="day-card" data-week="3" data-day="2" data-hours="1">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Martes 20 Ago</h4>
+                            <div class="day-date">Día 13</div>
+                        </div>
+                        <div class="day-duration">1h</div>
+                    </div>
+                    <div class="day-content">Table Triggers + Referencias</div>
+                </div>
+                
+                <div class="day-card" data-week="3" data-day="3" data-hours="1.5">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Miércoles 21 Ago</h4>
+                            <div class="day-date">Día 14</div>
+                        </div>
+                        <div class="day-duration">1h 30m</div>
+                    </div>
+                    <div class="day-content">Pages (Card + List)</div>
+                </div>
+                
+                <div class="day-card rest-day" data-week="3" data-day="4" data-hours="0">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Jueves 22 Ago</h4>
+                            <div class="day-date">Descanso</div>
+                        </div>
+                        <div class="day-duration">📴 Rest</div>
+                    </div>
+                    <div class="day-content">Día de descanso y reflexión</div>
+                </div>
+                
+                <div class="day-card" data-week="3" data-day="5" data-hours="1.5">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Viernes 23 Ago</h4>
+                            <div class="day-date">Día 15</div>
+                        </div>
+                        <div class="day-duration">1h 30m</div>
+                    </div>
+                    <div class="day-content">Codeunits + Testing avanzado</div>
+                </div>
+                
+                <div class="day-card" data-week="3" data-day="6" data-hours="1">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Sábado 24 Ago</h4>
+                            <div class="day-date">Día 16</div>
+                        </div>
+                        <div class="day-duration">1h</div>
+                    </div>
+                    <div class="day-content">Extensions + Mini Project</div>
+                </div>
+                
+                <div class="day-card" data-week="3" data-day="7" data-hours="1">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Domingo 25 Ago</h4>
+                            <div class="day-date">Día 17</div>
+                        </div>
+                        <div class="day-duration">1h</div>
+                    </div>
+                    <div class="day-content">Reports + Queries</div>
+                </div>
+                
+                <div class="day-card" data-week="3" data-day="8" data-hours="1">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Lunes 26 Ago</h4>
+                            <div class="day-date">Día 18</div>
+                        </div>
+                        <div class="day-duration">1h</div>
+                    </div>
+                    <div class="day-content">Import/Export + XMLports</div>
+                </div>
+                
+                <div class="day-card" data-week="3" data-day="9" data-hours="1">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Martes 27 Ago</h4>
+                            <div class="day-date">Día 19</div>
+                        </div>
+                        <div class="day-duration">1h</div>
+                    </div>
+                    <div class="day-content">🔥 APIs + Entra ID (crítico)</div>
+                </div>
+                
+                <div class="day-card" data-week="3" data-day="10" data-hours="1.5">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Miércoles 28 Ago</h4>
+                            <div class="day-date">Día 20</div>
+                        </div>
+                        <div class="day-duration">1h 30m</div>
+                    </div>
+                    <div class="day-content">🚀 Power Platform</div>
+                </div>
+                
+                <div class="day-card" data-week="3" data-day="11" data-hours="1">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Jueves 29 Ago</h4>
+                            <div class="day-date">Día 21</div>
+                        </div>
+                        <div class="day-duration">1h</div>
+                    </div>
+                    <div class="day-content">GitHub Copilot + Repaso general</div>
+                </div>
+                
+                <div class="day-card" data-week="3" data-day="12" data-hours="2">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Viernes 30 Ago</h4>
+                            <div class="day-date">Final Prep</div>
+                        </div>
+                        <div class="day-duration">2h</div>
+                    </div>
+                    <div class="day-content">🎯 PRÁCTICA FINAL + Mock exams</div>
+                </div>
+                
+                <div class="day-card exam-day" data-week="3" data-day="13" data-hours="0">
+                    <div class="day-header">
+                        <div class="day-checkbox" onclick="toggleDay(this)">✓</div>
+                        <div class="day-info">
+                            <h4>Sábado 31 Ago</h4>
+                            <div class="day-date">🎯 EXAM DAY</div>
+                        </div>
+                        <div class="day-duration">🏆</div>
+                    </div>
+                    <div class="day-content">¡EXAMEN MB-820! 💪</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>💪 ¡Tú puedes hacerlo! Consistency is key. 🚀</p>
+            <p>Progreso guardado localmente en tu navegador</p>
+        </div>
+    </div>
+
+    <script>
+        // Load saved progress
+        function loadProgress() {
+            const saved = localStorage.getItem('mb820-progress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                Object.keys(progress).forEach(dayKey => {
+                    const dayCard = document.querySelector(`[data-week="${progress[dayKey].week}"][data-day="${progress[dayKey].day}"]`);
+                    if (dayCard && progress[dayKey].completed) {
+                        const checkbox = dayCard.querySelector('.day-checkbox');
+                        checkbox.classList.add('checked');
+                        dayCard.classList.add('completed');
+                    }
+                });
+            }
+            updateStats();
+        }
+        
+        // Save progress
+        function saveProgress() {
+            const progress = {};
+            document.querySelectorAll('.day-card').forEach(card => {
+                const week = card.dataset.week;
+                const day = card.dataset.day;
+                const completed = card.classList.contains('completed');
+                const key = `w${week}d${day}`;
+                progress[key] = {
+                    week: week,
+                    day: day,
+                    completed: completed
+                };
+            });
+            localStorage.setItem('mb820-progress', JSON.stringify(progress));
+        }
+        
+        // Toggle day completion
+        function toggleDay(checkbox) {
+            const dayCard = checkbox.closest('.day-card');
+            const isCompleted = dayCard.classList.contains('completed');
+            
+            if (isCompleted) {
+                checkbox.classList.remove('checked');
+                dayCard.classList.remove('completed');
+            } else {
+                checkbox.classList.add('checked');
+                dayCard.classList.add('completed');
+            }
+            
+            saveProgress();
+            updateStats();
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const allDays = document.querySelectorAll('.day-card');
+            const completedDays = document.querySelectorAll('.day-card.completed');
+            
+            let totalHours = 0;
+            completedDays.forEach(day => {
+                totalHours += parseFloat(day.dataset.hours || 0);
+            });
+            
+            const progressPercent = Math.round((completedDays.length / allDays.length) * 100);
+            
+            document.getElementById('completed-days').textContent = completedDays.length;
+            document.getElementById('total-hours').textContent = totalHours.toFixed(1) + 'h';
+            document.getElementById('progress-percent').textContent = progressPercent + '%';
+            
+            // Update week progress bars
+            updateWeekProgress();
+        }
+        
+        function updateWeekProgress() {
+            // Week 1
+            const week1Days = document.querySelectorAll('[data-week="1"]');
+            const week1Completed = document.querySelectorAll('[data-week="1"].completed');
+            document.getElementById('week1-progress').style.width = `${(week1Completed.length / week1Days.length) * 100}%`;
+            
+            // Week 2
+            const week2Days = document.querySelectorAll('[data-week="2"]');
+            const week2Completed = document.querySelectorAll('[data-week="2"].completed');
+            document.getElementById('week2-progress').style.width = `${(week2Completed.length / week2Days.length) * 100}%`;
+            
+            // Week 3
+            const week3Days = document.querySelectorAll('[data-week="3"]');
+            const week3Completed = document.querySelectorAll('[data-week="3"].completed');
+            document.getElementById('week3-progress').style.width = `${(week3Completed.length / week3Days.length) * 100}%`;
+        }
+        
+        // Load progress on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+        });
+    </script>
+</body>
+</html>
