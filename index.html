@@ -642,25 +642,66 @@
     </div>
 
     <script>
-        // Load saved progress
-        function loadProgress() {
-            const saved = localStorage.getItem('mb820-progress');
-            if (saved) {
-                const progress = JSON.parse(saved);
-                Object.keys(progress).forEach(dayKey => {
-                    const dayCard = document.querySelector(`[data-week="${progress[dayKey].week}"][data-day="${progress[dayKey].day}"]`);
-                    if (dayCard && progress[dayKey].completed) {
-                        const checkbox = dayCard.querySelector('.day-checkbox');
-                        checkbox.classList.add('checked');
-                        dayCard.classList.add('completed');
+        // Configuration
+        const JSONBIN_API_KEY = '$2a$10$LURZdmnD6PnvxqUQr1m2LOe.3M7aOpWz6.0q36y5la7CldcMw6ObW'; // Obtener en jsonbin.io
+        let USER_ID = localStorage.getItem('mb820-user-id') || generateUserId();
+        
+        // Generate unique user ID
+        function generateUserId() {
+            const id = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+            localStorage.setItem('mb820-user-id', id);
+            return id;
+        }
+        
+        // Load saved progress from cloud
+        async function loadProgress() {
+            try {
+                // Try cloud first
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${USER_ID}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Master-Key': JSONBIN_API_KEY
                     }
                 });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const progress = data.record;
+                    applyProgress(progress);
+                } else {
+                    // Fallback to localStorage
+                    loadLocalProgress();
+                }
+            } catch (error) {
+                console.log('Cloud sync failed, using local storage');
+                loadLocalProgress();
             }
             updateStats();
         }
         
-        // Save progress
-        function saveProgress() {
+        // Load from localStorage (fallback)
+        function loadLocalProgress() {
+            const saved = localStorage.getItem('mb820-progress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                applyProgress(progress);
+            }
+        }
+        
+        // Apply progress to UI
+        function applyProgress(progress) {
+            Object.keys(progress).forEach(dayKey => {
+                const dayCard = document.querySelector(`[data-week="${progress[dayKey].week}"][data-day="${progress[dayKey].day}"]`);
+                if (dayCard && progress[dayKey].completed) {
+                    const checkbox = dayCard.querySelector('.day-checkbox');
+                    checkbox.classList.add('checked');
+                    dayCard.classList.add('completed');
+                }
+            });
+        }
+        
+        // Save progress to cloud and local
+        async function saveProgress() {
             const progress = {};
             document.querySelectorAll('.day-card').forEach(card => {
                 const week = card.dataset.week;
@@ -673,7 +714,24 @@
                     completed: completed
                 };
             });
+            
+            // Save locally first (instant)
             localStorage.setItem('mb820-progress', JSON.stringify(progress));
+            
+            // Save to cloud (background)
+            try {
+                await fetch(`https://api.jsonbin.io/v3/b/${USER_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify(progress)
+                });
+                console.log('✅ Synced to cloud');
+            } catch (error) {
+                console.log('⚠️ Cloud sync failed, saved locally');
+            }
         }
         
         // Toggle day completion
